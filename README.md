@@ -16,7 +16,7 @@ Spring Boot, MyBatis, Vue.js 3, Pinia, Spotify API, MySQL
 ### 🎯 목표
 운동 기록에 "그날의 음악과 감정"이라는 맥락을 더해, 단순 기록이 아닌 공감형 피트니스 SNS 구현
 
-###🚀 구현 범위
+### 🚀 구현 범위
 백엔드는 Post / Music / Like / Bookmark 도메인 API, 프론트엔드는 사용자 관리·마이페이지 도메인(로그인/회원가입, 마이페이지 3개 탭)을 담당. Spotify API 연동으로 게시글 작성 중 실제 음악을 검색·첨부할 수 있도록 구현
 
 ### 🏆 성과
