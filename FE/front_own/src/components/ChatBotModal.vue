@@ -59,8 +59,8 @@ const userInput = ref('');
 const isLoading = ref(false);
 const chatBox = ref(null);
 
-// 1. 발급받으신 GMS KEY
-const GMS_KEY = 'S14P02AM05-a79efcde-e514-4d74-9522-cb5cecacc1be';
+// 1.GMS KEY
+const GMS_KEY = 'API_KEY_HERE';;
 
 const messages = ref([
   { role: 'assistant', content: '안녕하세요! OWN 어시스턴트입니다!' }
@@ -92,7 +92,7 @@ const handleSend = async () => {
       },
       body: JSON.stringify({
         model: "gpt-5.2",
-        input: finalInput // gpt-5.2-pro는 'input' 키를 사용합니다.
+        input: finalInput // gpt-5.2-pro는 'input' 키를 사용
       })
     });
 
