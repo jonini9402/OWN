@@ -30,6 +30,7 @@ CREATE TABLE post_workout_type (
     CONSTRAINT fk_post_workout_type FOREIGN KEY (workout_type_id) 
         REFERENCES workout_type(workout_type_id) ON DELETE CASCADE
 );
+</details>
 
 <!-- 여기에 메인 화면 / 게시글 작성 화면 캡처 이미지 -->
 <img width="1257" height="849" alt="own_image" src="https://github.com/user-attachments/assets/9e17f7c1-e59a-43b7-b033-e96c96fee761" />
