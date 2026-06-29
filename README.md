@@ -4,14 +4,38 @@
 
 운동할 때 들었던 음악과 그날의 운동 내용을 함께 기록하고 공유하는 피트니스 소셜 플랫폼입니다. 단순한 운동 기록이 아니라 감정과 음악을 더해 자기 동기부여와 루틴 공유, 공감형 소통을 지원합니다.
 
+## 💡 Technical Decision & Key Challenges (핵심 기술적 고민)
+
+> 무분별한 라이브러리 사용이나 단순 기능 구현을 넘어, **데이터의 정합성과 백엔드 기본기(RDB 설계)**를 고민하며 개발했습니다.
+
+### 1. 다대다(N:M) 관계 모델링 및 DB 수준의 참조 무결성 보장
+* **문제 상황**: 하나의 게시글(`Post`)에 여러 운동 태그(`Workout Type`)가 붙고, 반대로 하나의 운동 태그가 여러 게시글에 쓰이는 **다대다(N:M) 관계** 구조를 설계해야 했습니다.
+* **해결 방안**: RDB의 구조적 한계를 해결하기 위해 중간 교차 테이블인 `post_workout_type`을 설계하여 1:N, N:1 관계로 정규화 및 해소했습니다.
+* **핵심 고려 사항 (Data Integrity)**:
+  * **복합 기본키(Composite PK) 설정**: `(post_id, workout_type_id)`를 묶어 PK로 지정함으로써, 동일한 게시글에 동일한 태그가 중복 매핑되는 오류를 원천 차단했습니다.
+  * **`ON DELETE CASCADE` 제약조건 활용**: 사용자가 게시글을 삭제하거나 운동 종류가 변경될 때, 중간 테이블에 찌꺼기 데이터(고아 데이터)가 남지 않도록 DB 수준에서 참조 무결성을 완벽히 관리했습니다.
+
+<details>
+<summary><b>📐 실제 구현한 교차 테이블 DDL (SQL) 보기 (클릭)</b></summary>
+
+```sql
+DROP TABLE IF EXISTS post_workout_type;
+
+CREATE TABLE post_workout_type (
+    post_id INT NOT NULL,
+    workout_type_id INT NOT NULL,
+    PRIMARY KEY (post_id, workout_type_id),
+    CONSTRAINT fk_post_workout_post FOREIGN KEY (post_id) 
+        REFERENCES post(post_id) ON DELETE CASCADE,
+    CONSTRAINT fk_post_workout_type FOREIGN KEY (workout_type_id) 
+        REFERENCES workout_type(workout_type_id) ON DELETE CASCADE
+);
+
 <!-- 여기에 메인 화면 / 게시글 작성 화면 캡처 이미지 -->
 <img width="1257" height="849" alt="own_image" src="https://github.com/user-attachments/assets/9e17f7c1-e59a-43b7-b033-e96c96fee761" />
 <img width="1567" height="875" alt="own_image2" src="https://github.com/user-attachments/assets/e1be53c2-02d2-4a50-bed3-b31e6c99ef7e" />
 
 ---
-
-### 🛠️ Tech Stack
-Spring Boot, MyBatis, Vue.js 3, Pinia, Spotify API, MySQL
 
 ### 🎯 목표
 운동 기록에 "그날의 음악과 감정"이라는 맥락을 더해, 단순 기록이 아닌 공감형 피트니스 SNS 구현
